@@ -5,6 +5,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const {secured} = require('./middlewares/auth');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config(); // environment variables
 
 const matches = require('./routes/matches');
 const auth = require('./routes/auth');
