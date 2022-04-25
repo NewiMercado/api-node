@@ -2,9 +2,14 @@ const {pool} = require('./../utils/db');
 
 
 // data entry
-const create = async () => {
-    (await pool()).collection('teams').insertOne(obj); // create the teams collection
-}
+const create = async ({ goalsFor, goalsAgainst, date, rival, points }) =>
+    (await pool()).collection('teams').insertOne({
+        goalsFor,
+        goalsAgainst,
+        date: new Date(date), // because of the date format
+        rival,
+        points
+    }) // create the teams collection
 
 // call to return the teams collection, find any data by parameters, sort it, establish the objects limit (50 if the limit parameter is empty) and then convert it to an array because of the find() method.
 const find = async ({conditions = {}, projection = {}, sort = {}, limit = 50}) => {

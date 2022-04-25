@@ -8,6 +8,6 @@ const pool = async () => {
         // log the error if db cant connect
         console.error(e.stack);
     }
-}
+};
 
 module.exports = { pool };

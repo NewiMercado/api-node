@@ -1,20 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const {secured} = require('./middlewares/auth');
+const cors = require('cors');
 
-const matches = require('./routes/matches.js');
+const matches = require('./routes/matches');
+const auth = require('./routes/auth');
 
-var app = express();
+const app = express();
 
+app.use(cors()); // Allow origin '*'
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/matches', matches);
+app.use('/matches', secured, matches); // passing secured, /matches will require auth 
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

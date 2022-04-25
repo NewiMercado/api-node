@@ -1,7 +1,9 @@
 const express = require('express');
+const req = require('express/lib/request');
 const router = express.Router();
 const model = require('./../models/matches');
-const { route } = require('../app');
+const middlewares = require('./../middlewares/matches');
+const res = require('express/lib/response');
 // points
 
 /* CALLS
@@ -30,10 +32,17 @@ const dates = async (req, res) => {
     }
 };
 
+const create = (req, res) => 
+    model
+    .create(req.body) // pass the body when the data is validated
+    .then((response) => res.json(response)) // send the response
+    .catch((e) => res.status(500).json(e));
+
 // ROUTES
 
 router.get('/all', all);
 router.get('/last', last);
 router.get('/dates', dates);
+router.post('/create', middlewares.create, create);
 
 module.exports = router;
